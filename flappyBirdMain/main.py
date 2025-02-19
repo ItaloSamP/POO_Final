@@ -69,6 +69,7 @@ def login():
 
     if not usuarios:
         print("Nenhum usuário cadastrado. Por favor, faça o cadastro primeiro.")
+        cadastro()  # Força o cadastro se não houver usuários
         return
 
     while True:
@@ -83,21 +84,32 @@ def login():
         else:
             print("Nome de usuário incorreto! Tente novamente.")
 
+def verificar_cadastro():
+    """Verifica se há usuários cadastrados antes de permitir o login."""
+    usuarios = carregar_usuarios()
+    if not usuarios:
+        print("Nenhum usuário cadastrado. Por favor, faça o cadastro primeiro.")
+        cadastro()  # Força o cadastro se não houver usuários
+    else:
+        while True:
+            deseja_logar = input("Deseja fazer login? [S/N] ").strip().upper()
+            if deseja_logar == "S":
+                login()
+                break
+            elif deseja_logar == "N":
+                print("Encerrando o programa...")
+                sys.exit()
+            else:
+                print("Entrada inválida! Digite 'S' para sim ou 'N' para não.")
+
 while True:
     entrando = input("Deseja Cadastrar? [S/N] ").strip().upper()
     if entrando == "S":
         cadastro()
         break
     elif entrando == "N":
-        deseja_logar = input("Deseja fazer login? [S/N] ").strip().upper()
-        if deseja_logar == "S":
-            login()
-            break
-        elif deseja_logar == "N":
-            print("Encerrando o programa...")
-            sys.exit()
-        else:
-            print("Entrada inválida! Digite 'S' para sim ou 'N' para não.")
+        verificar_cadastro()  # Verifica se há usuários cadastrados antes de permitir o login
+        break
     else:
         print("Entrada inválida! Digite 'S' para sim ou 'N' para não.")
 
